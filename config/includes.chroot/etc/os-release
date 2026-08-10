@@ -1,9 +1,0 @@
-NAME="LegacyOS"
-VERSION="1.0"
-ID=legacyos
-ID_LIKE=debian
-PRETTY_NAME="LegacyOS 1.0"
-VERSION_ID="1.0"
-HOME_URL="https://debian.org"
-BUG_REPORT_URL="https://debian.org"
-LOGO=debian-logo
