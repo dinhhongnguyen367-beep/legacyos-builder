@@ -1,0 +1,42 @@
+name: Build LegacyOS 1.0 ISO
+
+on:
+  workflow_dispatch: # Allows manual trigger from the web browser UI
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+
+      - name: Install Debian Live Build Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y live-build debootstrap genisoimage xorriso
+
+      - name: Configure Live-Build
+        run: |
+          lb config \
+            --distribution trixie \
+            --architectures amd64 \
+            --binary-images iso-hybrid \
+            --archive-areas "main contrib non-free non-free-firmware" \
+            --apt-indices false \
+            --bootappend-live "boot=live components hostname=legacyos username=legacyos quiet splash mitigations=off clocksource=tsc"
+
+      - name: Compile ISO
+        run: |
+          sudo lb build
+
+      - name: Rename ISO Output
+        run: |
+          mv live-image-amd64.hybrid.iso LegacyOS-1.0-amd64.iso
+
+      - name: Upload ISO Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: LegacyOS-1.0-ISO
+          path: LegacyOS-1.0-amd64.iso
+          retention-days: 7
