@@ -30,7 +30,7 @@ jobs:
 
       - name: Fix debootstrap Trixie support on Ubuntu host
         run: |
-          # Ubuntu's debootstrap sometimes lacks the trixie script; link it to sid
+          # Link Trixie script to Sid so Ubuntu's debootstrap can resolve Debian 13
           if [ ! -e /usr/share/debootstrap/scripts/trixie ]; then
             sudo ln -s sid /usr/share/debootstrap/scripts/trixie
           fi
@@ -44,7 +44,7 @@ jobs:
             --archive-areas "main contrib non-free non-free-firmware" \
             --mirror-bootstrap "http://deb.debian.org/debian/" \
             --mirror-chroot "http://deb.debian.org/debian/" \
-            --debootstrap-options "--keyring=/usr/share/keyrings/debian-archive-keyring.gpg" \
+            --keyring-packages debian-archive-keyring \
             --apt-indices false \
             --memtest none
 
